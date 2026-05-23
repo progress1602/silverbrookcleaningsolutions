@@ -1,0 +1,6 @@
+{
+  "name": "Silverbrook Cleaning Solutions",
+  "description": "Premium residential and commercial cleaning services with dynamic booking, interactive pricing calculator, and custom plans.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
