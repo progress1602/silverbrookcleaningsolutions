@@ -699,19 +699,14 @@ export default function App() {
             <div 
               id="brand-logo-container" 
               onClick={() => navigateToSection('section-hero', 'home')}
-              className="flex items-center space-x-2.5 cursor-pointer group"
+              className="flex items-center cursor-pointer group"
             >
-              <div className="h-11 w-11 bg-brand-600 text-white rounded-xl flex items-center justify-center shadow-lg shadow-brand-600/10 group-hover:bg-brand-500 transition-colors">
-                <Sparkles className="h-5 w-5 animate-pulse" />
-              </div>
-              <div>
-                <span className="font-display font-extrabold text-lg text-brand-900 tracking-tight block uppercase leading-none">
-                  Silverbrook
-                </span>
-                <span className="text-[10px] text-brand-500 font-bold uppercase tracking-widest block mt-1 leading-none">
-                  Cleaning Solutions
-                </span>
-              </div>
+              <img 
+                src="https://res.cloudinary.com/progresshenry/image/upload/v1779906017/logos1_qsgoee.png" 
+                alt="Silverbrook Cleaning Solutions" 
+                className="h-14 w-38 object-contain transition-transform duration-300 group-hover:scale-105"
+                referrerPolicy="no-referrer"
+              />
             </div>
 
             {/* Desktop Nav menu */}
@@ -1410,7 +1405,7 @@ export default function App() {
                 <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white aspect-square max-w-md mx-auto lg:max-w-none">
                   <div className="absolute inset-0 bg-brand-900/10 z-10 hover:bg-transparent transition-colors duration-500"></div>
                   <img 
-                    src="/src/assets/images/residential_result_1_1779511174736.png" 
+                    src="https://res.cloudinary.com/progresshenry/image/upload/v1779906032/branding_2_ilxzbf.jpg" 
                     alt="Pristine residential living room by Silverbrook"
                     className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700" 
                     id="hero-main-visual-image"
@@ -2529,18 +2524,13 @@ export default function App() {
             
             {/* Column 1 Logo brand statement */}
             <div className="lg:col-span-4 space-y-4">
-              <div className="flex items-center space-x-2.5">
-                <div className="h-10 w-10 bg-brand-650 text-white rounded-xl flex items-center justify-center shadow-lg border border-brand-500/30">
-                  <Sparkles className="h-5 w-5" />
-                </div>
-                <div>
-                  <span className="font-display font-extrabold text-base tracking-tight block uppercase leading-none text-brand-300">
-                    Silverbrook
-                  </span>
-                  <span className="text-[9px] text-slate-400 font-bold uppercase tracking-widest block mt-1 leading-none">
-                    Cleaning Solutions
-                  </span>
-                </div>
+              <div className="flex items-center">
+                <img 
+                  src="https://res.cloudinary.com/progresshenry/image/upload/v1779906017/logos2_hivvl3.png" 
+                  alt="Silverbrook Cleaning Solutions" 
+                  className="h-12 w-38 object-contain brightness-100"
+                  referrerPolicy="no-referrer"
+                />
               </div>
 
               <p className="text-xs text-slate-300 font-sans leading-relaxed">
@@ -2555,13 +2545,13 @@ export default function App() {
               <div className="pt-3 border-t border-slate-900 space-y-2">
                 <span className="text-[9px] uppercase font-bold text-slate-500 tracking-wider block">Connect on Socials</span>
                 <div className="flex items-center gap-2" id="footer-social-links-row">
-                  <a href="https://facebook.com/silverbrookcleaningsolutions" target="_blank" rel="noreferrer" className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-brand-500 hover:bg-brand-500/10 transition-all shadow-xs shrink-0 block" title="Facebook">
+                  <a href="https://www.facebook.com/share/1A61ebZNnj/?mibextid=wwXIfr" target="_blank" rel="noreferrer" className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-brand-500 hover:bg-brand-500/10 transition-all shadow-xs shrink-0 block" title="Facebook">
                     <Facebook className="h-4 w-4" />
                   </a>
-                  <a href="https://twitter.com/silverbrookclean" target="_blank" rel="noreferrer" className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-brand-500 hover:bg-brand-500/10 transition-all shadow-xs shrink-0 block" title="Twitter">
+                  <a href="https://x.com/silverbrookuk?s=21" target="_blank" rel="noreferrer" className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-brand-500 hover:bg-brand-500/10 transition-all shadow-xs shrink-0 block" title="Twitter">
                     <Twitter className="h-4 w-4" />
                   </a>
-                  <a href="https://instagram.com/silverbrookcleaningsolutions" target="_blank" rel="noreferrer" className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-brand-500 hover:bg-brand-500/10 transition-all shadow-xs shrink-0 block" title="Instagram">
+                  <a href="https://www.instagram.com/silverbrookcleaningsolutions?igsh=MTlwZXRjdm8yeXdxbQ%3D%3D&utm_source=qr" target="_blank" rel="noreferrer" className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-brand-500 hover:bg-brand-500/10 transition-all shadow-xs shrink-0 block" title="Instagram">
                     <Instagram className="h-4 w-4" />
                   </a>
                   <a href="https://tiktok.com/@silverbrookclean" target="_blank" rel="noreferrer" className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-brand-500 hover:bg-brand-500/10 transition-all shadow-xs shrink-0 block" title="TikTok">
