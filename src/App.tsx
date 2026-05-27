@@ -2290,7 +2290,7 @@ export default function App() {
                     <Phone className="h-5 w-5 text-brand-400 mt-0.5" />
                     <div>
                       <p className="font-bold text-white uppercase tracking-wider text-[10px]">Client Hotlines (8AM - 8PM EST)</p>
-                      <p className="text-brand-100 mt-0.5">(555) 389-4820</p>
+                      <p className="text-brand-100 mt-0.5">+44 7535 808 015</p>
                       <p className="text-[10px] text-brand-300">Toll-free priority corporate lines also configured</p>
                     </div>
                   </div>
@@ -2299,7 +2299,7 @@ export default function App() {
                     <Mail className="h-5 w-5 text-brand-400 mt-0.5" />
                     <div>
                       <p className="font-bold text-white uppercase tracking-wider text-[10px]">Accounts & Enquiries Email</p>
-                      <p className="text-brand-100 mt-0.5">enquiries@silverbrookcleaning.com</p>
+                      <p className="text-brand-100 mt-0.5">Info@silverbrookcleaningsolutions.co.uk</p>
                       <p className="text-[10px] text-brand-300">Monitored 24/7 with expedited urgent team dispatches</p>
                     </div>
                   </div>
@@ -2511,7 +2511,7 @@ export default function App() {
             <div className="md:col-span-3 text-right">
               <span className="text-[9px] uppercase font-bold text-slate-500 block mb-1">Direct HQ Coordinate</span>
               <a 
-                href="mailto:marcus@silverbrookcleaningsolutions.com"
+                href="Info@silverbrookcleaningsolutions.co.uk"
                 className="inline-flex items-center justify-center space-x-2 bg-brand-600 hover:bg-brand-500 text-white font-display text-[11px] font-bold uppercase tracking-widest py-3 px-5 rounded-xl transition-all shadow-md w-full text-center"
               >
                 <Mail className="h-3.5 w-3.5" />
