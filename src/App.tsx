@@ -447,7 +447,7 @@ export default function App() {
                           </button>
                           
                           <p className="font-display font-semibold text-brand-800 text-sm leading-snug pr-6">{plan.planName}</p>
-                          <p className="text-xs text-slate-500 mt-0.5">Estimated Base: ${plan.price}</p>
+                          <p className="text-xs text-slate-500 mt-0.5">Estimated Base: To be discussed with client</p>
                           
                           <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-slate-200/60 pt-3">
                             <div>
@@ -459,15 +459,15 @@ export default function App() {
                                 className="block mt-0.5 text-xs bg-white border border-slate-200 rounded-md py-1 px-1.5 focus:outline-hidden focus:ring-1 focus:ring-brand-500 text-slate-700"
                               >
                                 <option value="once">One-Time Clean (Standard)</option>
-                                <option value="weekly">Weekly Routine (Save 20%)</option>
-                                <option value="biweekly">Bi-Weekly Routine (Save 15%)</option>
-                                <option value="monthly">Monthly Routine (Save 10%)</option>
+                                <option value="weekly">Weekly Routine</option>
+                                <option value="biweekly">Bi-Weekly Routine</option>
+                                <option value="monthly">Monthly Routine</option>
                               </select>
                             </div>
                             <div className="text-right">
-                              <span className="text-[10px] text-slate-500 block">Total Price:</span>
-                              <span className="font-display font-bold text-brand-600 text-sm">
-                                ${Math.round(plan.price * discountCoeff)}
+                              <span className="text-[10px] text-slate-500 block">Pricing Scheme:</span>
+                              <span className="font-display font-semibold text-brand-600 text-[11px]">
+                                Bespoke Quote Pending
                               </span>
                             </div>
                           </div>
@@ -511,7 +511,7 @@ export default function App() {
                       </p>
                     )}
                     <span className="block text-[10px] text-brand-600 mt-2 hover:underline cursor-pointer font-medium" onClick={() => setCouponCode('FIRSTWEEK20')}>
-                      💡 Copy coupon &ldquo;FIRSTWEEK20&rdquo; for an extra 20% off your active order!
+                      💡 Copy coupon &ldquo;FIRSTWEEK20&rdquo; to secure a 20% discount on your final discussed contract!
                     </span>
                   </form>
 
@@ -519,17 +519,17 @@ export default function App() {
                   <div className="bg-brand-50 rounded-xl p-4 border border-brand-100 space-y-2" id="plans-price-summary-sheet">
                     <div className="flex justify-between text-xs text-slate-600">
                       <span>Accumulated subtotal:</span>
-                      <span className="font-semibold text-slate-800">${savedPlansPriceSummary.subtotal}</span>
+                      <span className="font-semibold text-slate-800">Bespoke Pricing Scheme</span>
                     </div>
                     {appliedDiscount && (
                       <div className="flex justify-between text-xs text-brand-600">
-                        <span>Discounted reduction ({appliedDiscount.percent}%):</span>
-                        <span>-${savedPlansPriceSummary.discount}</span>
+                        <span>Discount Coupon ({appliedDiscount.percent}%):</span>
+                        <span>Linked for review</span>
                       </div>
                     )}
                     <div className="border-t border-brand-200/50 pt-2 flex justify-between text-sm">
-                      <span className="font-semibold text-brand-800">Final Estimated Total Invoice:</span>
-                      <span className="font-display font-extrabold text-brand-600 text-lg">${savedPlansPriceSummary.total}</span>
+                      <span className="font-semibold text-brand-800">Final Budget:</span>
+                      <span className="font-display font-bold text-brand-600 text-xs uppercase tracking-wider">Discussed with company</span>
                     </div>
                   </div>
 
@@ -671,8 +671,8 @@ export default function App() {
               </div>
 
               <div className="flex justify-between border-t border-slate-200 pt-3 text-sm font-semibold text-brand-800">
-                <span>Final Guaranteed Quote:</span>
-                <span className="text-lg font-bold text-brand-600 font-display">${confirmedBookingDetails.totalPrice}</span>
+                <span>Bespoke Solution Scope:</span>
+                <span className="text-xs font-bold text-brand-600 font-display uppercase tracking-widest">Custom Quote Pending Owner Discussion</span>
               </div>
             </div>
 
@@ -1487,7 +1487,7 @@ export default function App() {
                 </div>
                 <h4 className="font-display font-bold text-slate-800 text-sm uppercase tracking-wide mb-2">Punctual Reliable Timings</h4>
                 <p className="text-xs text-slate-500 leading-relaxed font-sans">
-                  We guarantee precise arrivals inside our booked timeframes. If we are late by more than 15 minutes, we deduct $20 from your quote.
+                  We guarantee precise arrivals inside our booked timeframes. If we are late by more than 15 minutes, we deduct an agreed loyalty credit from your custom plan.
                 </p>
                 <div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between">
                   <span className="text-[10px] font-bold uppercase text-brand-600 tracking-widest">Elite Schedule Care</span>
@@ -1575,14 +1575,12 @@ export default function App() {
                       {plan.tagline}
                     </p>
                     
-                    <div className="pt-2 flex items-baseline">
-                      <span className="text-sm font-sans mr-1">Starts Est.</span>
-                      <span className="font-display font-extrabold text-4xl">${plan.price}</span>
-                      <span className={`text-xs ml-1.5 ${plan.popular ? 'text-slate-400' : 'text-slate-500'}`}>/ Visit</span>
-                    </div>
+                    <p className={`font-display font-extrabold text-base italic pt-2 ${plan.popular ? 'text-brand-300' : 'text-brand-600'}`}>
+                      Pricing discussed with client
+                    </p>
 
                     <p className={`text-[11px] pb-4 border-b ${plan.popular ? 'border-brand-800' : 'border-slate-200/60'}`}>
-                      💡 Save up to <strong className="font-bold">20%</strong> when you configure regular weekly schedules during checkout basket confirmation.
+                      💡 Bespoke schedules, frequency modifiers, and specific chemical selections are customized and agreed on review.
                     </p>
 
                     {/* Features checklist */}
@@ -1840,8 +1838,8 @@ export default function App() {
                             <p className="text-xs font-semibold text-slate-800 leading-none truncate">{addon.name}</p>
                             <p className="text-[10px] text-slate-400 mt-0.5 truncate">{addon.desc}</p>
                           </div>
-                          <span className="text-xs font-display font-bold text-brand-600 leading-none">
-                            +${addon.price}
+                          <span className="text-xs font-display font-semibold text-brand-600 leading-none">
+                            Bespoke Rate
                           </span>
                         </div>
                       );
@@ -1897,7 +1895,7 @@ export default function App() {
                           return (
                             <div key={addonId} className="flex justify-between">
                               <span>↳ {option?.name}:</span>
-                              <span>+${option?.price}</span>
+                              <span className="text-brand-300">Bespoke Custom Rate</span>
                             </div>
                           );
                         })}
@@ -1907,11 +1905,11 @@ export default function App() {
 
                   <div className="bg-white/5 rounded-2xl p-4 border border-white/5 text-center mt-6">
                     <span className="text-[10px] tracking-widest text-brand-300 uppercase block font-display">Net Visit Quote</span>
-                    <span className="font-display font-extrabold text-white text-4xl block mt-1" id="invoice-total-display">
-                      ${calculatedPrice}
+                    <span className="font-display font-medium text-white text-xl block mt-1" id="invoice-total-display">
+                      Pricing discussed post-submission
                     </span>
                     <span className="text-[10px] text-slate-300 block mt-1 font-sans">
-                      {serviceFrequency === 'once' ? 'Total single cleaning investment' : `Pre-discounted clean cost per recurring visit`}
+                      Our audit directors will determine a tailored bespoke rate for your exact space parameters
                     </span>
                   </div>
 
@@ -1923,10 +1921,10 @@ export default function App() {
                       className="w-full bg-brand-500 hover:bg-brand-400 text-white font-display font-semibold rounded-xl py-3 text-xs uppercase tracking-widest transition-all cursor-pointer flex items-center justify-center space-x-2 shadow-lg"
                     >
                       <Sparkles className="h-4 w-4" />
-                      <span>Lock In Custom Quote Bid</span>
+                      <span>Save Spec & Direct To Review</span>
                     </button>
                     <p className="text-[10px] text-slate-400 text-center font-sans tracking-wide leading-relaxed">
-                      💡 Locking in sends details to your Saved Plans checkout basket list so you can bundle multiple schedules!
+                      💡 Saving sends your space configuration to your Saved Configurations basket list so you can request reviews for multiple specifications!
                     </p>
                   </div>
 

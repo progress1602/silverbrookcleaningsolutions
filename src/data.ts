@@ -85,7 +85,7 @@ export const TESTIMONIALS: Testimonial[] = [
     name: 'Sarah & Michael Vance',
     role: 'Townhouse Residents',
     rating: 5,
-    comment: 'With two active toddlers, our apartment gets chaotic fast. Silverbrook’s bi-weekly plan is an absolute lifesaver. The calculator price is transparent, the online booking is super convenient, and the checkout process was seamless.',
+    comment: 'With two active toddlers, our apartment gets chaotic fast. Silverbrook’s bi-weekly plan is an absolute lifesaver. The custom configuration options are intuitive, the online scheduling is super convenient, and the booking process is seamless.',
     verified: true,
     image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150',
     serviceType: 'Standard Brooks Clean'
