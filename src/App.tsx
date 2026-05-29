@@ -134,6 +134,7 @@ export default function App() {
   const [specialRemarks, setSpecialRemarks] = useState('');
   const [bookingSuccessModal, setBookingSuccessModal] = useState(false);
   const [confirmedBookingDetails, setConfirmedBookingDetails] = useState<any>(null);
+  const [whatsappUrl, setWhatsappUrl] = useState('');
 
   // Gallery Active Category Filter and Drag/Comparison slider state
   const [galleryFilter, setGalleryFilter] = useState<'all' | 'residential' | 'commercial' | 'detailed'>('all');
@@ -304,8 +305,9 @@ export default function App() {
       return;
     }
 
+    const orderId = `SCS-${Math.floor(100000 + Math.random() * 900000)}`;
     const orderReceipt = {
-      orderId: `SCS-${Math.floor(100000 + Math.random() * 900000)}`,
+      orderId,
       customer: { name: bookingName, email: bookingEmail, phone: bookingPhone },
       date: bookingDate || 'To be finalized',
       time: bookingTime || 'Contact scheduled',
@@ -319,8 +321,64 @@ export default function App() {
       couponApplied: appliedDiscount ? appliedDiscount.code : 'None'
     };
 
+    // Construct highly detailed & well-arranged WhatsApp message for +447535 808015
+    const lineDivider = '━━━━━━━━━━━━━━━━━━━━━━';
+    let textMessage = `🧹 *SILVERBROOK CLEANING SOLUTIONS* 🧹\n`;
+    textMessage += `${lineDivider}\n`;
+    textMessage += `✨ *NEW BOOKING CONFIRMATION* ✨\n\n`;
+    textMessage += `🆔 *Booking Code:* \`${orderId}\`\n\n`;
+    
+    textMessage += `👤 *CLIENT DETAILS*\n`;
+    textMessage += `• *Full Name:* ${bookingName}\n`;
+    textMessage += `• *Phone Number:* ${bookingPhone}\n`;
+    textMessage += `• *Email Address:* ${bookingEmail}\n\n`;
+    
+    textMessage += `📅 *APPOINTMENT SCHEDULE*\n`;
+    textMessage += `• *Preferred Date:* ${bookingDate || 'To be finalized'}\n`;
+    textMessage += `• *Preferred Time:* ${bookingTime || 'Contact scheduled'}\n\n`;
+    
+    textMessage += `📌 *REQUESTED PLANS*\n`;
+    if (savedPlans.length > 0) {
+      savedPlans.forEach((p, idx) => {
+        let freqLabel = 'One-Time Clean';
+        if (p.frequency === 'weekly') freqLabel = 'Weekly Routine';
+        if (p.frequency === 'biweekly') freqLabel = 'Bi-Weekly Routine';
+        if (p.frequency === 'monthly') freqLabel = 'Monthly Routine';
+        textMessage += `${idx + 1}. *${p.planName}* (${freqLabel})\n`;
+      });
+    } else {
+      textMessage += `• *Custom Service Consultation*\n`;
+    }
+    
+    if (specialRemarks.trim()) {
+      textMessage += `\n🛠️ *SPECIAL INSTRUCTIONS / REMARKS*\n`;
+      textMessage += `_${specialRemarks.trim()}_\n`;
+    }
+    
+    textMessage += `\n💵 *PRICING SUMMARY*\n`;
+    textMessage += `• *Estimated Price:* £${savedPlansPriceSummary.total}\n`;
+    if (appliedDiscount) {
+      textMessage += `• *Coupon Code Applied:* ${appliedDiscount.code} (${appliedDiscount.percent}% Discount)\n`;
+    } else {
+      textMessage += `• *Coupon Applied:* None\n`;
+    }
+    textMessage += `• *Payment Method:* Custom Quote / Discussion on WhatsApp\n\n`;
+    
+    textMessage += `${lineDivider}\n`;
+    textMessage += `_Submitted via Digital Booking System - Silverbrook_`;
+
+    const formattedUrl = `https://wa.me/447535808015?text=${encodeURIComponent(textMessage)}`;
+    setWhatsappUrl(formattedUrl);
     setConfirmedBookingDetails(orderReceipt);
     setBookingSuccessModal(true);
+
+    // Deep link redirect to WhatsApp
+    try {
+      window.open(formattedUrl, '_blank');
+    } catch (err) {
+      console.error("Popup blocked or failed to redirect automatically: ", err);
+    }
+
     // Reset basket and selections
     setSavedPlans([]);
     setAppliedDiscount(null);
@@ -644,45 +702,79 @@ export default function App() {
             <div className="w-16 h-16 bg-brand-100 text-brand-600 rounded-full flex items-center justify-center mx-auto mb-4 border border-brand-200">
               <Sparkles className="h-8 w-8 animate-spin-slow" />
             </div>
-            <h3 className="font-display font-bold text-2xl text-brand-800 mb-2">Service Reservation Confirmed!</h3>
+            <h3 className="font-display font-bold text-2xl text-brand-800 mb-2">Booking Confirmed!</h3>
             <p className="text-sm text-slate-600 max-w-md mx-auto mb-6">
-              Your customized service plan is logged under booking code <strong className="text-brand-600 font-mono tracking-wider">{confirmedBookingDetails.orderId}</strong>. One of our executive quality managers will call you at <strong className="text-slate-800">{confirmedBookingDetails.customer.phone}</strong> in under 15 minutes!
+              Your service plan is registered under booking code <strong className="text-brand-600 font-mono tracking-wider">{confirmedBookingDetails.orderId}</strong>. We have generated your high-priority WhatsApp summary to finalize schedule details.
             </p>
 
             <div className="bg-slate-50 rounded-2xl p-5 text-left border border-slate-100 space-y-3 text-xs mb-6">
-              <p className="font-bold font-display uppercase tracking-widest text-[10px] text-slate-500 border-b border-slate-200 pb-2">Quote Summary Info</p>
+              <p className="font-bold font-display uppercase tracking-widest text-[10px] text-slate-500 border-b border-slate-200 pb-2">Detailed Reservation Statement</p>
               
               <div className="flex justify-between">
                 <span className="text-slate-500">Scheduled Date & TimeSlot:</span>
                 <span className="font-medium text-slate-800">{confirmedBookingDetails.date} @ {confirmedBookingDetails.time}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">Primary Billing Reference:</span>
-                <span className="font-medium text-slate-800">{confirmedBookingDetails.customer.name} ({confirmedBookingDetails.customer.email})</span>
+                <span className="text-slate-500">Contact Reference:</span>
+                <span className="font-medium text-slate-800">{confirmedBookingDetails.customer.name}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-500">Phone Number:</span>
+                <span className="font-medium text-slate-800">{confirmedBookingDetails.customer.phone}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-500">Email Address:</span>
+                <span className="font-medium text-slate-800">{confirmedBookingDetails.customer.email}</span>
               </div>
               
               <div>
                 <span className="text-slate-500 block mb-1">Selected Program Configurations:</span>
-                <ul className="space-y-1 pl-3 list-disc text-slate-700">
-                  {confirmedBookingDetails.plansOrdered.map((po: any, i: number) => (
-                    <li key={i}>{po.name} ({po.frequency})</li>
-                  ))}
+                <ul className="space-y-1 pl-3 list-disc text-slate-700 font-medium">
+                  {confirmedBookingDetails.plansOrdered.map((po: any, i: number) => {
+                    let freqLabel = 'One-Time Clean';
+                    if (po.frequency === 'weekly') freqLabel = 'Weekly';
+                    if (po.frequency === 'biweekly') freqLabel = 'Bi-Weekly';
+                    if (po.frequency === 'monthly') freqLabel = 'Monthly';
+                    return (
+                      <li key={i}>{po.name} ({freqLabel})</li>
+                    );
+                  })}
                 </ul>
               </div>
 
+              {confirmedBookingDetails.remarks && (
+                <div className="border-t border-slate-200 pt-2">
+                  <span className="text-slate-500 block mb-1">Access Instructions / Remarks:</span>
+                  <p className="text-slate-600 italic bg-white p-2 rounded-lg border border-slate-100">{confirmedBookingDetails.remarks}</p>
+                </div>
+              )}
+
               <div className="flex justify-between border-t border-slate-200 pt-3 text-sm font-semibold text-brand-800">
-                <span>Bespoke Solution Scope:</span>
-                <span className="text-xs font-bold text-brand-600 font-display uppercase tracking-widest">Custom Quote Pending Owner Discussion</span>
+                <span>Total Estimated Cost:</span>
+                <span className="font-display font-bold text-brand-600">£{confirmedBookingDetails.totalPrice}</span>
               </div>
             </div>
 
-            <div className="flex space-x-3">
+            <p className="text-xs text-slate-500 mb-6 font-sans">
+              ⚠️ If you were not automatically redirected to WhatsApp, please tap the button below to send your structured details to <strong className="text-slate-800">+447535 808015</strong>.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-3">
+              <a 
+                id="btn-send-whatsapp-success"
+                href={whatsappUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="flex-1 bg-emerald-600 hover:bg-emerald-500 hover:translate-y-[-1px] text-white font-display font-semibold rounded-xl py-3 text-xs uppercase tracking-wider transition-all cursor-pointer shadow-md flex items-center justify-center space-x-2"
+              >
+                <span>📲 Send to WhatsApp</span>
+              </a>
               <button 
                 id="btn-success-close"
                 onClick={() => setBookingSuccessModal(false)}
-                className="flex-1 bg-brand-600 hover:bg-brand-500 text-white font-display font-medium rounded-xl py-3 text-xs uppercase tracking-wider transition-all cursor-pointer shadow-md"
+                className="flex-1 bg-slate-50 hover:bg-slate-100 text-slate-700 font-display font-semibold rounded-xl py-3 text-xs uppercase tracking-wider transition-all cursor-pointer border border-slate-200"
               >
-                Superb, close this
+                Close Window
               </button>
             </div>
           </div>
@@ -881,83 +973,41 @@ export default function App() {
                 <div className="max-w-4xl mx-auto space-y-6">
                   <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                     <div>
-                      <span className="text-[10px] font-display font-extrabold uppercase tracking-widest text-brand-500">Spotlight Inspection Bay</span>
+                      <span className="text-[10px] font-display font-extrabold uppercase tracking-widest text-brand-500">Spotlight Showcase</span>
                       <h3 className="font-display font-bold text-lg text-slate-900 mt-1">
-                        {GALLERY_ITEMS.find(g => g.id === selectedGallerySpotlight)?.title || 'Selected Restoration'}
+                        {GALLERY_ITEMS.find(g => g.id === selectedGallerySpotlight)?.title || 'Selected Action Highlight'}
                       </h3>
                     </div>
                     <div className="hidden sm:flex text-xs space-x-2 text-slate-500">
                       <span className="bg-slate-100 px-2.5 py-1 rounded-md font-mono font-semibold">
                         ID: {selectedGallerySpotlight}
                       </span>
-                      <span className="bg-brand-50 text-brand-700 px-2.5 py-1 rounded-md capitalize font-semibold">
-                        Type: {GALLERY_ITEMS.find(g => g.id === selectedGallerySpotlight)?.category}
+                      <span className="bg-brand-50 text-brand-700 px-2.5 py-1 rounded-md capitalize font-semibold font-display uppercase tracking-wider text-[10px]">
+                        {GALLERY_ITEMS.find(g => g.id === selectedGallerySpotlight)?.category}
                       </span>
                     </div>
                   </div>
 
-                  {/* interactive before after drag box */}
+                  {/* Single beautiful spotlight photo of real cleaner working */}
                   <div 
-                    id="page-before-after-comparer"
-                    onMouseMove={handleMouseMove}
-                    onTouchMove={handleTouchMove}
-                    onMouseDown={() => setIsSliding(true)}
-                    onMouseUp={() => setIsSliding(false)}
-                    onMouseLeave={() => setIsSliding(false)}
-                    className="relative h-[250px] sm:h-[450px] rounded-2xl overflow-hidden shadow-2xl border-4 border-slate-100 cursor-ew-resize select-none"
+                    id="page-spotlight-image-container"
+                    className="relative h-[250px] sm:h-[450px] rounded-2xl overflow-hidden shadow-2xl border-4 border-slate-150 select-none group"
                   >
-                    
-                    {/* Before state (Base original) */}
-                    <div className="absolute inset-0">
-                      <img 
-                        src={GALLERY_ITEMS.find(g => g.id === selectedGallerySpotlight)?.beforeImage || GALLERY_ITEMS[0].beforeImage} 
-                        alt="Before Silverbrook restoration"
-                        className="w-full h-full object-cover" 
-                        referrerPolicy="no-referrer"
-                      />
-                      {/* Darker dusty dirty color filter simulation */}
-                      <div className="absolute inset-0 bg-brand-950/45 mix-blend-color-burn backdrop-blur-[1px] flex items-center justify-start p-6">
-                        <span className="bg-brand-950/90 text-white font-display text-[10px] sm:text-xs font-bold tracking-widest py-1.5 px-3 rounded-md border border-white/15">
-                          ORIGINAL / DUSTY FILM (BEFORE)
-                        </span>
-                      </div>
+                    <img 
+                      src={GALLERY_ITEMS.find(g => g.id === selectedGallerySpotlight)?.image || GALLERY_ITEMS[0].image} 
+                      alt="Silverbrook professional cleaning staff in action"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]" 
+                      referrerPolicy="no-referrer"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent flex items-end p-6">
+                      <span className="bg-brand-600 text-white font-display text-[10px] sm:text-xs font-semibold tracking-widest py-1.5 px-4 rounded-md border border-white/20 shadow-lg">
+                        ✨ SILVERBROOK STANDARDS
+                      </span>
                     </div>
-
-                    {/* After state (Clipped top block) */}
-                    <div 
-                      id="page-slider-after-layer"
-                      className="absolute inset-y-0 left-0 right-0 overflow-hidden" 
-                      style={{ clipPath: `polygon(0 0, ${sliderPosition}% 0, ${sliderPosition}% 100%, 0 100%)` }}
-                    >
-                      <img 
-                        src={GALLERY_ITEMS.find(g => g.id === selectedGallerySpotlight)?.afterImage || GALLERY_ITEMS[0].afterImage} 
-                        alt="After Silverbrook standard clean"
-                        className="absolute inset-0 w-full h-[250px] sm:h-[450px] object-cover" 
-                        referrerPolicy="no-referrer"
-                      />
-                      <div className="absolute inset-0 bg-transparent flex items-center justify-end p-6">
-                        <span className="bg-brand-600 text-white font-display text-[10px] sm:text-xs font-semibold tracking-widest py-1.5 px-4 rounded-md border border-white/20 shadow-lg">
-                          ✨ IMMACULATE RESTORED (AFTER)
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Dynamic control divider handle strip */}
-                    <div 
-                      id="page-slider-control-center-bar"
-                      className="absolute inset-y-0 w-1.5 bg-brand-600 cursor-ew-resize z-30"
-                      style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
-                    >
-                      <div className="absolute top-1/2 -translate-y-1/2 -left-3.5 h-7 w-7 bg-brand-600 rounded-full border-2 border-white flex items-center justify-center text-white shadow-lg font-mono text-xs">
-                        ↔
-                      </div>
-                    </div>
-
                   </div>
 
-                  <p className="text-xs text-slate-500 leading-relaxed font-sans block text-center">
+                  <p className="text-xs text-slate-600 leading-relaxed font-sans block text-center max-w-2xl mx-auto">
                     {GALLERY_ITEMS.find(g => g.id === selectedGallerySpotlight)?.description}
-                    <span className="block mt-2 font-semibold text-brand-650 font-mono">Drag left and right across image to dynamically scrub before/after views!</span>
                   </p>
                 </div>
               </div>
@@ -1032,7 +1082,6 @@ export default function App() {
                   return (
                     <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="archive-photos-grid">
                       {filtered.map(item => {
-                        const showBefore = !!showPhotoBeforeState[item.id];
                         return (
                           <div 
                             key={item.id}
@@ -1041,46 +1090,22 @@ export default function App() {
                             }`}
                           >
                             <div className="relative h-56 bg-slate-100 overflow-hidden">
-                              {/* Before Image under dirty view / After Image under clean view */}
                               <img 
-                                src={showBefore ? item.beforeImage : item.afterImage} 
+                                src={item.image} 
                                 alt={item.title} 
-                                className="w-full h-full object-cover transition-all duration-300"
+                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                 referrerPolicy="no-referrer"
                               />
-
-                              {/* Dirty dusty CSS simulation on Before */}
-                              {showBefore && (
-                                <div className="absolute inset-0 bg-brand-950/40 mix-blend-color-burn backdrop-blur-[1px]"></div>
-                              )}
 
                               {/* Absolute badges */}
                               <div className="absolute top-3 left-3 flex space-x-1">
                                 <span className="bg-brand-900/95 text-white text-[8px] uppercase font-bold px-2 py-0.5 rounded-sm tracking-widest leading-none">
                                   {item.category}
                                 </span>
-                                <span className={`text-[8px] uppercase font-bold px-2 py-0.5 rounded-sm leading-none border shadow-xs ${
-                                  showBefore 
-                                    ? 'bg-rose-500 border-rose-400 text-white' 
-                                    : 'bg-emerald-500 border-emerald-400 text-white'
-                                }`}>
-                                  {showBefore ? 'Dusty Original' : 'Sparkle Restored'}
+                                <span className="bg-emerald-500 border border-emerald-400 text-white text-[8px] uppercase font-bold px-2 py-0.5 rounded-sm leading-none shadow-xs">
+                                  Sparkle Quality
                                 </span>
                               </div>
-
-                              {/* Interactive before after click switch */}
-                              <button 
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setShowPhotoBeforeState({
-                                    ...showPhotoBeforeState,
-                                    [item.id]: !showBefore
-                                  });
-                                }}
-                                className="absolute bottom-3 right-3 bg-white/95 text-brand-900 hover:bg-white text-[9px] font-bold py-1.5 px-3 rounded-lg border border-slate-200 shadow-sm leading-none transition-all flex items-center space-x-1 font-mono uppercase tracking-wide cursor-pointer"
-                              >
-                                <span>🔄 View {showBefore ? 'After' : 'Before'}</span>
-                              </button>
                             </div>
 
                             {/* Info */}
@@ -1163,76 +1188,54 @@ export default function App() {
               </div>
 
               {/* CEO SECTION: MUST COME FIRST! */}
-              <div className="bg-white border border-slate-200/80 rounded-3xl p-8 md:p-12 shadow-xs" id="ceo-section-primary">
-                <div className="grid lg:grid-cols-12 gap-12 items-center">
-                  
-                  {/* CEO Photo Frame (Left on lg desktop layout) */}
-                  <div className="lg:col-span-5 relative flex justify-center" id="ceo-image-frame-parent">
-                    <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-slate-100 max-w-md w-full aspect-[4/5] bg-slate-100">
-                      <img 
-                        src={BIOGRAPHY.ownerImage} 
-                        alt="CEO Marcus Silverbrook" 
-                        className="w-full h-full object-cover grayscale-0 hover:scale-103 transition-transform duration-500"
-                        referrerPolicy="no-referrer"
-                      />
-                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-brand-950 via-brand-950/70 to-transparent p-6 text-white">
-                        <p className="font-display font-extrabold text-lg text-brand-300">{BIOGRAPHY.ownerName}</p>
-                        <p className="text-[10px] text-slate-300 uppercase font-semibold block tracking-wider mt-0.5">{BIOGRAPHY.ownerTitle}</p>
-                      </div>
-                    </div>
-                    {/* Visual accents */}
-                    <div className="absolute -top-4 -left-4 w-12 h-12 rounded-full bg-brand-200/40 -z-10 animate-pulse font-sans"></div>
-                    <div className="absolute -bottom-4 -right-4 w-20 h-20 rounded-3xl bg-brand-100/60 -z-10"></div>
+              <div className="bg-white border border-slate-200/80 rounded-3xl p-8 md:p-12 shadow-xs max-w-4xl mx-auto" id="ceo-section-primary">
+                {/* CEO Biographical details */}
+                <div className="space-y-6" id="ceo-verbal-particulars">
+                  <div className="space-y-2">
+                    <span className="text-xs uppercase font-bold text-brand-650 font-display tracking-widest block">Executive Leadership Portrait</span>
+                    <h2 className="font-display font-extrabold text-3xl text-brand-950">Marcus Silverbrook</h2>
+                    <p className="text-slate-500 font-sans text-xs font-semibold">{BIOGRAPHY.ownerTitle}</p>
+                    <p className="text-slate-500 italic text-sm font-sans border-l-4 border-brand-500 pl-4 py-1">
+                      &ldquo;{BIOGRAPHY.ownerQuote}&rdquo;
+                    </p>
                   </div>
 
-                  {/* CEO Biographical details (Right on lg desktop layout) */}
-                  <div className="lg:col-span-7 space-y-6" id="ceo-verbal-particulars">
-                    <div className="space-y-2">
-                      <span className="text-xs uppercase font-bold text-brand-650 font-display tracking-widest block">Executive Leadership Portrait</span>
-                      <h2 className="font-display font-extrabold text-3xl text-brand-950">Marcus Silverbrook</h2>
-                      <p className="text-slate-500 italic text-sm font-sans border-l-4 border-brand-500 pl-4 py-1">
-                        &ldquo;{BIOGRAPHY.ownerQuote}&rdquo;
-                      </p>
-                    </div>
+                  <div className="space-y-4 text-slate-600 font-sans text-xs leading-relaxed">
+                    <p>
+                      {BIOGRAPHY.ownerBio}
+                    </p>
+                    <p>
+                      {BIOGRAPHY.detailedCEOStory || 'Marcus Silverbrook brings a lifetime of quality-driven operations management to the service industry. After a decade managing luxury boutique hotel properties where cleanliness and presentation dictate extreme guest luxury standards, he noticed a major gap in the market: residential or corporate cleaning agencies were inconsistent, hurried, and rarely treated customer properties with white-glove fidelity.'}
+                    </p>
+                    <p>
+                      Determined to enforce exceptional standards, Marcus personally operates quality oversight. Every cleaner certified under Silverbrook must fulfill background-vetted credentials. Marcus remains accessible directly to help craft bespoke cleaning coordinates for large luxury estates or commercial floors.
+                    </p>
+                  </div>
 
-                    <div className="space-y-4 text-slate-600 font-sans text-xs leading-relaxed">
-                      <p>
-                        {BIOGRAPHY.ownerBio}
-                      </p>
-                      <p>
-                        {BIOGRAPHY.detailedCEOStory || 'Marcus Silverbrook brings a lifetime of quality-driven operations management to the service industry. After a decade managing luxury boutique hotel properties where cleanliness and presentation dictate extreme guest luxury standards, he noticed a major gap in the market: residential or corporate cleaning agencies were inconsistent, hurried, and rarely treated customer properties with white-glove fidelity.'}
-                      </p>
-                      <p>
-                        Determined to enforce exceptional standards, Marcus personally operates quality oversight. Every cleaner certified under Silverbrook must fulfill background-vetted credentials. Marcus remains accessible directly to help craft bespoke cleaning coordinates for large luxury estates or commercial floors.
-                      </p>
-                    </div>
-
-                    {/* CEO Certified checklist block */}
-                    <div className="border border-brand-100 bg-brand-50/50 rounded-2xl p-5 space-y-3">
-                      <h4 className="font-display font-bold text-xs uppercase text-brand-850 tracking-wider flex items-center">
-                        <Award className="h-4.5 w-4.5 text-brand-600 mr-2" /> Founder Standards & Qualifications
-                      </h4>
-                      <div className="grid sm:grid-cols-2 gap-2 text-xs text-slate-700 font-sans">
-                        <div className="flex items-center space-x-2">
-                          <Check className="h-4 w-4 bg-brand-100 text-brand-700 rounded-full p-0.5 shrink-0" />
-                          <span>Meticulous 55-Point Checklist</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Check className="h-4 w-4 bg-brand-100 text-brand-700 rounded-full p-0.5 shrink-0" />
-                          <span>Green Care Bio-Formula Only</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Check className="h-4 w-4 bg-brand-100 text-brand-700 rounded-full p-0.5 shrink-0" />
-                          <span>Background Double-Screen Audits</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Check className="h-4 w-4 bg-brand-100 text-brand-700 rounded-full p-0.5 shrink-0" />
-                          <span>Hospitality-Driven Meticulousness</span>
-                        </div>
+                  {/* CEO Certified checklist block */}
+                  <div className="border border-brand-100 bg-brand-50/50 rounded-2xl p-5 space-y-3">
+                    <h4 className="font-display font-bold text-xs uppercase text-brand-850 tracking-wider flex items-center">
+                      <Award className="h-4.5 w-4.5 text-brand-600 mr-2" /> Founder Standards & Qualifications
+                    </h4>
+                    <div className="grid sm:grid-cols-2 gap-2 text-xs text-slate-700 font-sans">
+                      <div className="flex items-center space-x-2">
+                        <Check className="h-4 w-4 bg-brand-100 text-brand-700 rounded-full p-0.5 shrink-0" />
+                        <span>Meticulous 55-Point Checklist</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Check className="h-4 w-4 bg-brand-100 text-brand-700 rounded-full p-0.5 shrink-0" />
+                        <span>Green Care Bio-Formula Only</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Check className="h-4 w-4 bg-brand-100 text-brand-700 rounded-full p-0.5 shrink-0" />
+                        <span>Background Double-Screen Audits</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Check className="h-4 w-4 bg-brand-100 text-brand-700 rounded-full p-0.5 shrink-0" />
+                        <span>Hospitality-Driven Meticulousness</span>
                       </div>
                     </div>
                   </div>
-
                 </div>
               </div>
 
@@ -1945,77 +1948,38 @@ export default function App() {
               </p>
             </div>
 
-            {/* Dynamic interactive slider card */}
+            {/* Dynamic interactive feature card */}
             <div className="bg-slate-50 border border-slate-200/60 p-6 md:p-8 rounded-3xl mb-12" id="gallery-interactive-slider-box">
               <div className="max-w-4xl mx-auto">
                 
-                <div className="text-center mb-4">
-                  <span className="text-[10px] font-display font-extrabold uppercase tracking-widest text-brand-600">Feature Spotlight Matrix</span>
-                  <p className="text-sm font-semibold text-slate-800 font-sans">Interactive Hardwood & Office Surface Restore - Drag to Slide Comparison</p>
+                <div className="text-center mb-6">
+                  <span className="text-[10px] font-display font-extrabold uppercase tracking-widest text-brand-600">Feature Guild Highlight</span>
+                  <p className="text-sm font-semibold text-slate-850 font-sans">Our Cleaners Working in Realistic, Premium Spaces</p>
                 </div>
 
-                {/* Before After Image Container */}
+                {/* Main Action Photo Container */}
                 <div 
                   id="before-after-comparer"
-                  onMouseMove={handleMouseMove}
-                  onTouchMove={handleTouchMove}
-                  onMouseDown={() => setIsSliding(true)}
-                  onMouseUp={() => setIsSliding(false)}
-                  onMouseLeave={() => setIsSliding(false)}
-                  className="relative h-[250px] sm:h-[400px] rounded-2xl overflow-hidden shadow-2xl border-4 border-white cursor-ew-resize select-none"
+                  className="relative h-[250px] sm:h-[400px] rounded-2xl overflow-hidden shadow-2xl border-4 border-white select-none group"
                 >
-                  
-                  {/* Before state (Base original) */}
-                  <div className="absolute inset-0">
-                    <img 
-                      src="/src/assets/images/residential_result_1_1779511174736.png" 
-                      alt="Before Silverbrook restoration"
-                      className="w-full h-full object-cover" 
-                      id="gallery-before-image-src"
-                    />
-                    {/* Darker dusty dirty color filter simulation to show Before! */}
-                    <div className="absolute inset-0 bg-brand-950/40 mix-blend-color-burn backdrop-blur-xs flex items-center justify-start p-6">
-                      <span className="bg-brand-950/80 text-white font-display text-xs font-bold tracking-widest py-1 px-3 rounded-md border border-white/20">
-                        ORIGINAL / DUSTY (BEFORE)
-                      </span>
-                    </div>
+                  <img 
+                    src="https://images.unsplash.com/photo-1558317374-067fb5f30001?auto=format&fit=crop&q=80&w=1200" 
+                    alt="Silverbrook premium cleaners team cleaning a realistic elegant house"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.01]" 
+                    id="gallery-feature-working-image"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent flex items-end justify-between p-6">
+                    <span className="bg-brand-900/90 text-white font-display text-xs font-bold tracking-widest py-1.5 px-3.5 rounded-md border border-white/20">
+                      GUILD STANDARDS IN ACTION
+                    </span>
+                    <span className="bg-emerald-600 text-white font-display text-xs font-semibold tracking-widest py-1.5 px-3.5 rounded-md border border-white/20 shadow-lg">
+                      ✨ 100% Sparkle Guarantee
+                    </span>
                   </div>
-
-                  {/* After state (Clipped top block) */}
-                  <div 
-                    id="slider-after-layer"
-                    className="absolute inset-y-0 left-0 right-0 overflow-hidden" 
-                    style={{ clipPath: `polygon(0 0, ${sliderPosition}% 0, ${sliderPosition}% 100%, 0 100%)` }}
-                  >
-                    <img 
-                      src="/src/assets/images/residential_result_1_1779511174736.png" 
-                      alt="After Silverbrook standard clean"
-                      className="absolute inset-0 w-full h-[250px] sm:h-[400px] object-cover" 
-                    />
-                    <div className="absolute inset-0 bg-transparent flex items-center justify-end p-6">
-                      <span className="bg-brand-600 text-white font-display text-xs font-semibold tracking-widest py-1.5 px-3.5 rounded-md border border-white/20 shadow-lg">
-                        ✨ SILVERBROOK SHINE (AFTER)
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Dynamic control divider handle strip */}
-                  <div 
-                    id="slider-control-center-bar"
-                    className="absolute inset-y-0 w-1.5 bg-brand-600 cursor-ew-resize z-30"
-                    style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
-                  >
-                    <div className="absolute top-1/2 -translate-y-1/2 -left-3.5 h-8 w-8 bg-brand-600 rounded-full border-2 border-white flex items-center justify-center text-white shadow-lg">
-                      ↔
-                    </div>
-                  </div>
-
                 </div>
 
-                <div className="mt-4 flex justify-between items-center text-xs text-slate-500 font-sans">
-                  <span>◀ Dusty film & smudged window panel elements</span>
-                  <span className="font-semibold text-brand-600">Drag to slide slider comparison</span>
-                  <span>Sparkling polished wax hardwood surface finish ▶</span>
+                <div className="mt-4 text-center text-xs text-slate-500 font-sans">
+                  <span>Our hand-trained local professional cleaners use premium, eco-friendly green chemicals in realistic home settings.</span>
                 </div>
 
               </div>
@@ -2057,12 +2021,12 @@ export default function App() {
                   >
                     <div className="h-48 relative overflow-hidden bg-slate-100">
                       <img 
-                        src={item.afterImage} 
+                        src={item.image} 
                         alt={item.title} 
                         className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
                       />
                       <span className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-xs text-brand-800 text-[9px] uppercase font-bold px-2 py-1 rounded-sm tracking-widest border border-slate-200">
-                        {item.category} RESTORED
+                        {item.category} Sparkle
                       </span>
                     </div>
                     <div className="p-5 space-y-2">
@@ -2128,38 +2092,19 @@ export default function App() {
               </p>
             </div>
 
-            <div className="grid lg:grid-cols-12 gap-12 items-center" id="about-us-box-grid">
+            <div className="max-w-4xl mx-auto space-y-8" id="about-us-box-grid">
               
-              {/* Left Column owner visual profile portrait */}
-              <div className="lg:col-span-5 relative" id="about-owner-profile-card">
-                <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white max-w-sm mx-auto">
-                  <img 
-                    src={BIOGRAPHY.ownerImage} 
-                    alt={BIOGRAPHY.ownerName} 
-                    className="w-full h-auto object-cover grayscale-0 transform hover:scale-103 transition-transform duration-500"
-                    id="owner-portrait-img-main"
-                  />
-                  
-                  {/* Absolute quote block */}
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-brand-950/95 via-brand-950/80 to-transparent p-6 text-white" id="owner-overlay-statement">
-                    <p className="font-display font-bold text-sm text-brand-300 mb-0.5">{BIOGRAPHY.ownerName}</p>
-                    <p className="text-[10px] text-slate-300 uppercase font-semibold block tracking-wider">{BIOGRAPHY.ownerTitle}</p>
-                  </div>
-                </div>
-
-                {/* Stiff design grid accent backing */}
-                <div className="absolute -top-6 -left-6 w-20 h-20 bg-brand-200/50 rounded-full -z-10 animate-pulse"></div>
-                <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-brand-100 rounded-3xl -z-10"></div>
-              </div>
-
-              {/* Right Column story explanation */}
-              <div className="lg:col-span-7 space-y-6" id="about-story-verbal-card">
+              {/* Story explanation */}
+              <div className="space-y-6" id="about-story-verbal-card">
                 
-                <div className="bg-white p-6 rounded-2xl border border-slate-100/80 shadow-xs space-y-3">
-                  <h4 className="font-display font-extrabold text-brand-950 text-sm uppercase tracking-wide flex items-center">
-                    <User className="mr-2 text-brand-600 h-4.5 w-4.5" /> Founder&apos;s Dedication Statement
-                  </h4>
-                  <p className="text-xs text-slate-500 italic font-sans leading-relaxed">
+                <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/60 shadow-xs space-y-4">
+                  <div className="space-y-1">
+                    <h4 className="font-display font-extrabold text-brand-950 text-sm uppercase tracking-wider flex items-center text-brand-700">
+                      <User className="mr-2 text-brand-600 h-4.5 w-4.5" /> {BIOGRAPHY.ownerName}
+                    </h4>
+                    <p className="text-[10px] text-slate-500 uppercase font-semibold tracking-wider">{BIOGRAPHY.ownerTitle}</p>
+                  </div>
+                  <p className="text-xs text-slate-500 italic font-sans leading-relaxed border-l-4 border-brand-500 pl-4 py-1">
                     &ldquo;{BIOGRAPHY.ownerQuote}&rdquo;
                   </p>
                   <p className="text-xs text-slate-600 font-sans leading-relaxed">

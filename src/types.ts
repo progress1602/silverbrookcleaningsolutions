@@ -55,8 +55,7 @@ export interface GalleryItem {
   id: string;
   title: string;
   category: 'residential' | 'commercial' | 'detailed';
-  beforeImage: string;
-  afterImage: string;
+  image: string;
   description: string;
 }
 
