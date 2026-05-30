@@ -97,7 +97,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     id: 'g-1',
     title: 'Executive Living Room Restoration',
     category: 'residential',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7gV4GPmIcofLU8ap0O7d0dLOlo3Gwf4xLwQ&s',
+    image: 'https://res.cloudinary.com/progresshenry/image/upload/v1780148460/WhatsApp_Image_2026-05-30_at_12.53.46_PM_3_fj24i5.jpg',
     description: 'Detailed living room restoration featuring professional upholstery cleaning, baseboard sanitization, and meticulous dusting by our skilled team.'
   },
   {
@@ -201,11 +201,11 @@ export const GALLERY_ITEMS: GalleryItem[] = [
 ];
 
 export const BIOGRAPHY = {
-  ownerName: 'Marcus Silverbrook',
+  ownerName: 'Stephen Nengi',
   ownerTitle: 'Founder, Proprietor & Lead Standards Quality Auditor',
   ownerQuote: 'Cleanliness is not just about aesthetics—it is about restoring mental space, creating healthy breathing environments, and delivering unmatched peace of mind.',
   ownerImage: '/src/assets/images/owner_portrait_1779511210845.png',
-  ownerBio: 'Marcus founded Silverbrook Cleaning Solutions in 2018 with a singular vision: to bring premium, white-glove residential and commercial cleaning of uncompromising quality to the region. Having started as a sole practitioner, Marcus hand-designed our 55-point Elite Care checking standard and personally trains each specialist. Today, he continues to oversee client accounts to ensure the family-owned standard never wavers.',
+  ownerBio: 'Stephen founded Silverbrook Cleaning Solutions in 2026 with a singular vision: to bring premium, white-glove residential and commercial cleaning of uncompromising quality to the region. Having started as a sole practitioner, Stephen hand-designed our 55-point Elite Care checking standard and personally trains each specialist. Today, he continues to oversee client accounts to ensure the family-owned standard never wavers.',
   companyStory: 'Silverbrook Cleaning Solutions has earned its status as the most trusted premium service provider by merging meticulous old-school cleaning craftsmanship with modern, eco-friendly green chemicals. We understand that our clientele expects an exceptional level of detail, absolute reliability, and highly vetted personnel. Every member of our cleaning guild is fully licensed, insured, double-background checked, and certified in the Silverbrook Care program. We back our results with an unconditional 24-Hour Sparkle Guarantee: if you are not entirely overawed by our clean, we will return and re-clean it immediately.',
   stats: [
     { label: 'Premium Accounts', value: '1,200+' },
@@ -213,11 +213,8 @@ export const BIOGRAPHY = {
     { label: 'Guild Specialists', value: '28' },
     { label: 'Eco Chemicals used', value: '100%' }
   ],
-  detailedCEOStory: 'Marcus Silverbrook brings a lifetime of quality-driven operations management to the service industry. After a decade managing luxury boutique hotel properties where cleanliness and presentation dictate extreme guest luxury standards, he noticed a major gap in the market: residential or corporate cleaning agencies were inconsistent, hurried, and rarely treated customer properties with white-glove fidelity. He established Silverbrook to solve this. Marcus still guarantees that his personalized 55-point checklist is followed on every sweep, ensuring your home is respected with the ultimate care.',
+  detailedCEOStory: 'Stephen Nengi brings a lifetime of quality-driven operations management to the service industry. After a decade managing luxury boutique hotel properties where cleanliness and presentation dictate extreme guest luxury standards, he noticed a major gap in the market: residential or corporate cleaning agencies were inconsistent, hurried, and rarely treated customer properties with white-glove fidelity. He established Silverbrook to solve this. Stephen still guarantees that his personalized 55-point checklist is followed on every sweep, ensuring your home is respected with the ultimate care.',
   companyMilestones: [
-    { year: '2018', title: 'The Genesis', desc: 'Founded by Marcus with 2 teammates, immediately launching the organic green chemical protocol.' },
-    { year: '2020', title: 'Commercial Expansion', desc: 'Selected as the leading boutique service partner for the region\'s prominent tech headquarters & elite financial floors.' },
-    { year: '2022', title: 'The Cleaning Guild', desc: 'Co-created the elite professional Silverbrook Guild Academy, certifying full background-tested personnel.' },
-    { year: '2024', title: 'Carbon Neutral Standard', desc: 'Achieved complete 100% green supply pipeline certification with custom biological deodorants.' }
+    { year: '2026', title: 'The Genesis', desc: 'Founded by Stephen with 2 teammates, immediately launching the organic green chemical protocol.' },
   ]
 };

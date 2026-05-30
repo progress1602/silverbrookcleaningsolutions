@@ -35,6 +35,8 @@ import {
   Search,
   Award,
   Briefcase,
+  Settings,
+  ExternalLink,
   Timer,
   CheckCircle,
   Sun,
@@ -151,10 +153,122 @@ export default function App() {
   // Custom interactive slider for each of the 15 photos in the grid
   const [showPhotoBeforeState, setShowPhotoBeforeState] = useState<Record<string, boolean>>({});
 
+  // 17-item dynamic grid media links state
+  const [seventeenGridItems, setSeventeenGridItems] = useState<{ id: number; mediaUrl: string; linkUrl: string }[]>(() => {
+    try {
+      const stored = localStorage.getItem('s_seventeen_grid_items');
+      if (stored) {
+        return JSON.parse(stored);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    return [
+      {
+        id: 1,
+        mediaUrl: 'https://assets.mixkit.co/videos/preview/mixkit-hand-cleaning-a-glass-table-with-a-cloth-42025-large.mp4',
+        linkUrl: 'https://assets.mixkit.co/videos/preview/mixkit-hand-cleaning-a-glass-table-with-a-cloth-42025-large.mp4'
+      },
+      {
+        id: 2,
+        mediaUrl: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=800&q=80',
+        linkUrl: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 3,
+        mediaUrl: 'https://assets.mixkit.co/videos/preview/mixkit-putting-clean-towels-on-the-bed-42031-large.mp4',
+        linkUrl: 'https://assets.mixkit.co/videos/preview/mixkit-putting-clean-towels-on-the-bed-42031-large.mp4'
+      },
+      {
+        id: 4,
+        mediaUrl: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=800&q=80',
+        linkUrl: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 5,
+        mediaUrl: 'https://assets.mixkit.co/videos/preview/mixkit-cleaning-home-with-vacuum-cleaner-42018-large.mp4',
+        linkUrl: 'https://assets.mixkit.co/videos/preview/mixkit-cleaning-home-with-vacuum-cleaner-42018-large.mp4'
+      },
+      {
+        id: 6,
+        mediaUrl: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80',
+        linkUrl: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 7,
+        mediaUrl: 'https://assets.mixkit.co/videos/preview/mixkit-rubbing-a-wooden-surface-with-a-cloth-42032-large.mp4',
+        linkUrl: 'https://assets.mixkit.co/videos/preview/mixkit-rubbing-a-wooden-surface-with-a-cloth-42032-large.mp4'
+      },
+      {
+        id: 8,
+        mediaUrl: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&q=80',
+        linkUrl: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 9,
+        mediaUrl: 'https://assets.mixkit.co/videos/preview/mixkit-spraying-detergent-on-a-surface-42033-large.mp4',
+        linkUrl: 'https://assets.mixkit.co/videos/preview/mixkit-spraying-detergent-on-a-surface-42033-large.mp4'
+      },
+      {
+        id: 10,
+        mediaUrl: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=800&q=80',
+        linkUrl: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 11,
+        mediaUrl: 'https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?auto=format&fit=crop&w=800&q=80',
+        linkUrl: 'https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 12,
+        mediaUrl: 'https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=800&q=80',
+        linkUrl: 'https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 13,
+        mediaUrl: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=800&q=80',
+        linkUrl: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 14,
+        mediaUrl: 'https://images.unsplash.com/photo-1563453392212-326f5e854473?auto=format&fit=crop&w=800&q=80',
+        linkUrl: 'https://images.unsplash.com/photo-1563453392212-326f5e854473?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 15,
+        mediaUrl: 'https://images.unsplash.com/photo-1603796846097-bee99e4a60c9?auto=format&fit=crop&w=800&q=80',
+        linkUrl: 'https://images.unsplash.com/photo-1603796846097-bee99e4a60c9?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 16,
+        mediaUrl: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80',
+        linkUrl: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 17,
+        mediaUrl: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=800&q=80',
+        linkUrl: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=800&q=80'
+      }
+    ];
+  });
+
+  const [isGridEditorOpen, setIsGridEditorOpen] = useState(false);
+  const [editedGridItems, setEditedGridItems] = useState(() => seventeenGridItems);
+
+  const saveSeventeenGrid = (itemsToSave: { id: number; mediaUrl: string; linkUrl: string }[]) => {
+    setSeventeenGridItems(itemsToSave);
+    try {
+      localStorage.setItem('s_seventeen_grid_items', JSON.stringify(itemsToSave));
+    } catch (e) {
+      console.error(e);
+    }
+    setIsGridEditorOpen(false);
+  };
+
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
-      // Format beautifully in Local/CST time for Silverbrook headquarters (Austin, TX)
+      // Format beautifully in Local UK time for Silverbrook headquarters (Manchester, UK)
       const options: Intl.DateTimeFormatOptions = {
         weekday: 'short',
         year: 'numeric',
@@ -164,7 +278,7 @@ export default function App() {
         minute: '2-digit',
         second: '2-digit',
         hour12: true,
-        timeZone: 'America/Chicago'
+        timeZone: 'Europe/London'
       };
       setFooterTime(new Intl.DateTimeFormat('en-US', options).format(now));
     };
@@ -587,7 +701,7 @@ export default function App() {
                     )}
                     <div className="border-t border-brand-200/50 pt-2 flex justify-between text-sm">
                       <span className="font-semibold text-brand-800">Final Budget:</span>
-                      <span className="font-display font-bold text-brand-600 text-xs uppercase tracking-wider">Discussed with company</span>
+                      <span className="font-display font-bold text-brand-600 text-xs uppercase tracking-wider">Discuss with company</span>
                     </div>
                   </div>
 
@@ -751,7 +865,7 @@ export default function App() {
 
               <div className="flex justify-between border-t border-slate-200 pt-3 text-sm font-semibold text-brand-800">
                 <span>Total Estimated Cost:</span>
-                <span className="font-display font-bold text-brand-600">£{confirmedBookingDetails.totalPrice}</span>
+                <span className="font-display font-bold text-brand-600">Discussed with company</span>
               </div>
             </div>
 
@@ -953,19 +1067,92 @@ export default function App() {
       <main className="flex-1">
         {activeTab === 'gallery' ? (
           <div id="page-gallery" className="bg-slate-50 min-h-screen py-12 animate-fade-in font-sans">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
               
-              {/* Page header */}
-              <div className="text-center max-w-3xl mx-auto space-y-4">
-                <span className="text-[11px] font-display font-bold uppercase tracking-widest text-brand-600 py-1.5 px-4 bg-brand-100/80 rounded-full inline-block">
+              {/* Page header (FIRST THING TO SEE NOW) */}
+              <div className="text-center max-w-3xl mx-auto space-y-4" id="gallery-verbal-header">
+                <span className="text-[11px] font-display font-bold uppercase tracking-widest text-[#a855f7] py-1.5 px-4 bg-purple-50 rounded-full inline-block border border-purple-100">
                   Verified Portfolios of Cleanliness
                 </span>
                 <h1 className="font-display font-extrabold text-4xl sm:text-5xl text-brand-950 tracking-tight leading-tight">
                   Silverbrook Meticulous <span className="text-brand-500">Photo Archive</span>
                 </h1>
-                <p className="text-sm text-slate-600">
+                <p className="text-sm text-slate-600 leading-relaxed max-w-2xl mx-auto font-sans">
                   Explore our comprehensive 15-photo showcase. Highlight any project file below to load it in the interactive comparative inspection bay or search specific surfaces in real time.
                 </p>
+              </div>
+
+              {/* 17 Interactive Media Grid Section */}
+              <div className="space-y-6" id="seventeen-media-grid-section">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-slate-200/80 pb-4 gap-4">
+                  <div>
+                    <span className="text-[10px] font-display font-extrabold uppercase tracking-widest text-brand-650 px-2.5 py-1 bg-brand-50 rounded-md border border-brand-100">
+                      🌍 Interactive Live Feeds
+                    </span>
+                    <h2 className="font-display font-extrabold text-xl text-slate-950 mt-1.5">
+                      Curated Premium Work Portfolios
+                    </h2>
+                  </div>
+                </div>
+
+                {/* 17 grids displaying beautifully (3 columns on md, 1 column on mobile, no shrink) */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8" id="seventeen-items-active-grid">
+                  {seventeenGridItems.map((item) => {
+                    const isVideo = item.mediaUrl.toLowerCase().includes('.mp4') || 
+                                    item.mediaUrl.toLowerCase().includes('.webm') || 
+                                    item.mediaUrl.toLowerCase().includes('.ogg') || 
+                                    item.mediaUrl.toLowerCase().includes('.mov') ||
+                                    item.mediaUrl.includes('assets.mixkit.co/videos');
+
+                    return (
+                      <a
+                        key={item.id}
+                        href={item.linkUrl || '#'}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="relative block w-full aspect-[4/3] rounded-2xl overflow-hidden bg-white border border-slate-250 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group select-none shrink-0"
+                      >
+                        {isVideo ? (
+                          <video
+                            src={item.mediaUrl}
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                            controls={false}
+                            preload="auto"
+                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                            ref={(el) => {
+                              if (el) {
+                                el.muted = true;
+                                el.defaultMuted = true;
+                                const playPromise = el.play();
+                                if (playPromise !== undefined) {
+                                  playPromise.catch((err) => {
+                                    console.log("Automatic playback retry:", err);
+                                  });
+                                }
+                              }
+                            }}
+                          />
+                        ) : (
+                          <img
+                            src={item.mediaUrl}
+                            alt=""
+                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                            referrerPolicy="no-referrer"
+                          />
+                        )}
+                        <div className="absolute inset-0 bg-slate-950/0 hover:bg-slate-950/5 transition-colors" />
+                        
+                        {/* Hover prompt */}
+                        <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-slate-950/75 text-white rounded-full p-2.5 backdrop-blur-xs shadow-md">
+                          <ExternalLink className="h-4 w-4" />
+                        </div>
+                      </a>
+                    );
+                  })}
+                </div>
               </div>
 
               {/* Spotlight Compartment Section */}
@@ -1193,7 +1380,7 @@ export default function App() {
                 <div className="space-y-6" id="ceo-verbal-particulars">
                   <div className="space-y-2">
                     <span className="text-xs uppercase font-bold text-brand-650 font-display tracking-widest block">Executive Leadership Portrait</span>
-                    <h2 className="font-display font-extrabold text-3xl text-brand-950">Marcus Silverbrook</h2>
+                    <h2 className="font-display font-extrabold text-3xl text-brand-950">Stephen Nengi</h2>
                     <p className="text-slate-500 font-sans text-xs font-semibold">{BIOGRAPHY.ownerTitle}</p>
                     <p className="text-slate-500 italic text-sm font-sans border-l-4 border-brand-500 pl-4 py-1">
                       &ldquo;{BIOGRAPHY.ownerQuote}&rdquo;
@@ -1205,10 +1392,10 @@ export default function App() {
                       {BIOGRAPHY.ownerBio}
                     </p>
                     <p>
-                      {BIOGRAPHY.detailedCEOStory || 'Marcus Silverbrook brings a lifetime of quality-driven operations management to the service industry. After a decade managing luxury boutique hotel properties where cleanliness and presentation dictate extreme guest luxury standards, he noticed a major gap in the market: residential or corporate cleaning agencies were inconsistent, hurried, and rarely treated customer properties with white-glove fidelity.'}
+                      {BIOGRAPHY.detailedCEOStory || 'Stephen Nengi brings a lifetime of quality-driven operations management to the service industry. After a decade managing luxury boutique hotel properties where cleanliness and presentation dictate extreme guest luxury standards, he noticed a major gap in the market: residential or corporate cleaning agencies were inconsistent, hurried, and rarely treated customer properties with white-glove fidelity.'}
                     </p>
                     <p>
-                      Determined to enforce exceptional standards, Marcus personally operates quality oversight. Every cleaner certified under Silverbrook must fulfill background-vetted credentials. Marcus remains accessible directly to help craft bespoke cleaning coordinates for large luxury estates or commercial floors.
+                      Determined to enforce exceptional standards, Stephen personally operates quality oversight. Every cleaner certified under Silverbrook must fulfill background-vetted credentials. Stephen remains accessible directly to help craft bespoke cleaning coordinates for large luxury estates or commercial floors.
                     </p>
                   </div>
 
@@ -1258,10 +1445,7 @@ export default function App() {
                       <h3 className="font-display font-extrabold text-white text-xs uppercase tracking-widest border-b border-white/10 pb-2">Historic Milestone Timeline</h3>
                       <div className="space-y-3">
                         {(BIOGRAPHY.companyMilestones || [
-                          { year: '2018', title: 'The Genesis', desc: 'Founded by Marcus with 2 teammates, immediately launching the organic green chemical protocol.' },
-                          { year: '2020', title: 'Commercial Expansion', desc: 'Selected as the leading boutique service partner for prominent tech headquarters.' },
-                          { year: '2022', title: 'The Cleaning Guild', desc: 'Co-created the elite professional Silverbrook Guild Academy, certifying background-tested personnel.' },
-                          { year: '2024', title: 'Carbon Neutral Standard', desc: 'Achieved complete 100% green supply pipeline certification with custom biological formulations.' }
+                          { year: '2026', title: 'The Genesis', desc: 'Founded by Stephen with 2 teammates, immediately launching the organic green chemical protocol.' }
                         ]).map((m, i) => (
                           <div key={i} className="flex gap-4 items-start text-xs font-sans">
                             <span className="bg-brand-500 text-white font-display font-bold px-2 py-0.5 rounded-md shrink-0">
@@ -1310,13 +1494,13 @@ export default function App() {
                 <div className="space-y-1">
                   <h4 className="font-display font-extrabold text-slate-900 text-lg">Official 24-Hour Sparkle Certificate Seal</h4>
                   <p className="text-xs text-slate-500 max-w-lg leading-relaxed">
-                    Silverbrook Cleaning Solutions is fully bonded, licensed, and protected with a $2,000,000 comprehensive liability policy. Marcus Silverbrook guarantees same-day re-clean visits if any visual space fails to excite.
+                    Silverbrook Cleaning Solutions is fully bonded, licensed, and protected with a £2,000,000 comprehensive liability policy. Stephen Nengi guarantees same-day re-clean visits if any visual space fails to excite.
                   </p>
                 </div>
                 <div className="inline-flex items-center space-x-4 text-[10px] font-bold uppercase tracking-wider text-brand-700 bg-brand-50 border border-brand-100/60 px-4 py-2 rounded-xl">
-                  <span>★ Licensed SCS-REG-2018-99</span>
                   <span>★ Bonded & Certified</span>
                   <span>★ Zero-Volatile Safe</span>
+
                 </div>
               </div>
 
@@ -2080,7 +2264,7 @@ export default function App() {
         </section>
 
 
-        {/* Section 6: About Us Section (Owner Marcus and Company Story, Unprecedented 24H guarantee) */}
+        {/* Section 6: About Us Section (Owner Stephen and Company Story, Unprecedented 24H guarantee) */}
         <section id="section-about" className="py-20 bg-slate-50 border-b border-slate-100">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
@@ -2134,7 +2318,7 @@ export default function App() {
                   <div className="space-y-1">
                     <p className="font-display font-extrabold text-xs uppercase text-brand-300 tracking-wider">Unconditional Guarantee</p>
                     <p className="text-[11px] text-slate-200 leading-normal">
-                      Marcus Silverbrook&apos;s guarantee: Our specialized crew is fully insured and re-cleans within 24 hours if you aren&apos;t completely thrilled.
+                      Stephen Nengi&apos;s guarantee: Our specialized crew is fully insured and re-cleans within 24 hours if you aren&apos;t completely thrilled.
                     </p>
                   </div>
                   <div className="bg-brand-500 text-white rounded-md text-[10px] font-bold px-3 py-1.5 uppercase font-display tracking-widest whitespace-nowrap self-stretch sm:self-auto flex items-center justify-center">
@@ -2252,8 +2436,8 @@ export default function App() {
                   <div className="flex items-start space-x-3">
                     <MapPin className="h-5 w-5 text-brand-400 mt-0.5" />
                     <div>
-                      <p className="font-bold text-white uppercase tracking-wider text-[10px]">Principal Corporate HQ</p>
-                      <p className="text-brand-100 mt-0.5">808 Silverbrook Executive Park, Suite 400</p>
+                      <p className="font-bold text-white uppercase tracking-wider text-[10px]">Address Corporate HQ</p>
+                      <p className="text-brand-100 mt-0.5">21 Shirley Avenue Salford Manchester M7 3QY</p>
                       <p className="text-[10px] text-brand-300">Fully licensed, insured & accredited agency</p>
                     </div>
                   </div>
@@ -2415,13 +2599,13 @@ export default function App() {
           <div className="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 sm:p-8 grid md:grid-cols-12 gap-6 items-center shadow-lg" id="footer-realtime-dashboard">
             {/* Live Operational Clock */}
             <div className="md:col-span-4 space-y-2">
-              <span className="text-[10px] uppercase font-bold tracking-widest text-slate-500 block">Austin HQ Local Time</span>
+              <span className="text-[10px] uppercase font-bold tracking-widest text-slate-500 block">United Kingdom Local Time</span>
               <div className="bg-slate-950/80 border border-slate-800 px-4 py-2.5 rounded-xl font-mono text-xs text-brand-400 font-extrabold shadow-inner flex items-center justify-between">
                 <span className="flex items-center space-x-1.5">
                   <Clock className="h-4 w-4 animate-pulse text-brand-500" />
                   <span>{footerTime || "Loading time..."}</span>
                 </span>
-                <span className="text-[9px] uppercase font-bold text-slate-500">CST</span>
+                <span className="text-[9px] uppercase font-bold text-slate-500">GMT/BST</span>
               </div>
             </div>
 
@@ -2429,8 +2613,8 @@ export default function App() {
             <div className="md:col-span-5 space-y-1">
               {(() => {
                 const now = new Date();
-                const austinTime = new Date(now.toLocaleString('en-US', { timeZone: 'America/Chicago' }));
-                const hours = austinTime.getHours();
+                const ukTime = new Date(now.toLocaleString('en-US', { timeZone: 'Europe/London' }));
+                const hours = ukTime.getHours();
                 const isActive = hours >= 7 && hours < 22;
                 return (
                   <>
@@ -2444,7 +2628,7 @@ export default function App() {
                     </div>
                     <p className="text-xs text-slate-400 leading-normal font-sans">
                       {isActive 
-                        ? '14 professional sanitization crews are active on terrain across Greater Austin today.' 
+                        ? '14 professional sanitization crews are active on terrain across Greater Manchester today.' 
                         : 'Our priority emergency dispatch is open. Direct luxury estate phone line connects instantly.'}
                     </p>
                   </>
@@ -2483,8 +2667,7 @@ export default function App() {
               </p>
 
               <div className="pt-2 text-[10px] text-slate-400 font-sans space-y-1 border-t border-slate-900">
-                <p>⚡ Registered License: <strong className="font-mono text-brand-300">SCS-REG-2018-99</strong></p>
-                <p>💼 Liability Coverage: <strong className="font-mono text-slate-300">$2,000,000 Comprehensive</strong></p>
+                <p>💼 Liability Coverage: <strong className="font-mono text-slate-300">£2,000,000 Comprehensive</strong></p>
               </div>
 
               <div className="pt-3 border-t border-slate-900 space-y-2">
@@ -2565,7 +2748,7 @@ export default function App() {
             <div className="lg:col-span-5 space-y-4">
               <h4 className="font-display font-bold text-xs uppercase tracking-widest text-brand-300">Lock Welcome Coupon (Real-Time Sub)</h4>
               <p className="text-xs text-slate-400 font-sans leading-relaxed">
-                Subscribe to receive Marcus’s seasonal safety alerts and lock in a <strong className="text-brand-300">Welcome 10% Discount Code</strong> applied automatically.
+                Subscribe to receive Silverbrook's seasonal safety alerts and lock in a <strong className="text-brand-300">Welcome 10% Discount Code</strong> applied automatically.
               </p>
 
               {footerSubscribedSuccess ? (
